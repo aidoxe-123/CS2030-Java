@@ -1,0 +1,20 @@
+jshell> /open ImmutableList.java
+jshell> new ImmutableList<Integer>(1,2,3).toArray()
+$.. ==> Object[3] { 1, 2, 3 }
+jshell> new ImmutableList<Integer>().toArray()
+$.. ==> Object[0] {  }
+jshell> new ImmutableList<Integer>(1,2,3).toArray(new Integer[0])
+$.. ==> Integer[3] { 1, 2, 3 }
+jshell> try {
+   ...>   new ImmutableList<Integer>(1,2,3).toArray(new String[0]);
+   ...> } catch (ArrayStoreException e) {
+   ...>   System.out.println(e);
+   ...> }
+java.lang.ArrayStoreException: Cannot add element to array as it is the wrong type
+jshell> try {
+   ...>   new ImmutableList<Integer>(1,2,3).toArray(null);
+   ...> } catch (NullPointerException e) {
+   ...>   System.out.println(e);
+   ...> }
+java.lang.NullPointerException: Input array cannot be null
+jshell> /exit

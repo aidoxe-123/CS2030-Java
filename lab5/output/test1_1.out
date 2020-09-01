@@ -1,0 +1,41 @@
+jshell> /open ImmutableList.java
+jshell> new ImmutableList<Integer>(1,2,3)
+$.. ==> [1, 2, 3]
+jshell> new ImmutableList<Integer>(Arrays.asList(1,2,3))
+$.. ==> [1, 2, 3]
+jshell> List<Integer> mList = new ArrayList<>(Arrays.asList(1,2,3))
+jshell> ImmutableList<Integer> imList = new ImmutableList<>(mList)
+jshell> imList.remove(3)
+$.. ==> [1, 2]
+jshell> imList
+imList ==> [1, 2, 3]
+jshell> imList.remove(3).add(2)
+$.. ==> [1, 2, 2]
+jshell> imList
+imList ==> [1, 2, 3]
+jshell> imList.remove(6)
+$.. ==> [1, 2, 3]
+jshell> imList.add(1).replace(1,3)
+$.. ==> [3, 2, 3, 3]
+jshell> imList.add(1).replace(1,1)
+$.. ==> [1, 2, 3, 1]
+jshell> imList.replace(6,3)
+$.. ==> [1, 2, 3]
+jshell> mList.set(0,10)
+$.. ==> 1
+jshell> mList
+mList ==> [10, 2, 3]
+jshell> imList
+imList ==> [1, 2, 3]
+jshell> Integer[] array = {1, 2, 3}
+jshell> ImmutableList<Integer> imList = new ImmutableList<>(array)
+jshell> array[0] = 10
+$.. ==> 10
+jshell> imList
+imList ==> [1, 2, 3]
+jshell> new ImmutableList<>(List.of(4,5,6)).add(7)
+$.. ==> [4, 5, 6, 7]
+jshell> ImmutableList<String> stringList = new ImmutableList<>(Arrays.asList("One","Two","Three"))
+jshell> stringList.add("Four");
+$.. ==> [One, Two, Three, Four]
+jshell> /exit

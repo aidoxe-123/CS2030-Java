@@ -1,0 +1,26 @@
+jshell> /open ImmutableList.java
+jshell> new ImmutableList<Integer>(1,2,3).filter(x -> x % 2 == 0)
+$.. ==> [2]
+jshell> new ImmutableList<String>("one", "two", "three").filter(x -> x.hashCode()%10 > 5)
+$.. ==> [two, three]
+jshell> Predicate<Object> p = x -> x.hashCode()%10 == 0
+jshell> new ImmutableList<String>("one", "two", "three").filter(p)
+$.. ==> []
+jshell> ImmutableList<Integer> list = new ImmutableList<String>("one", "two", "three").map(x -> x.length())
+jshell> /var list
+|    ImmutableList<Integer> list = [3, 3, 5]
+jshell> Function<Object,Integer> f = x -> x.hashCode()
+jshell> ImmutableList<Number> list = new ImmutableList<String>("one", "two", "three").map(f)
+jshell> /var list
+|    ImmutableList<Number> list = [110182, 115276, 110339486]
+jshell> new ImmutableList<Integer>(1,2,3).filter(x -> x > 3).map(x -> x + 1)
+$.. ==> []
+jshell> new ImmutableList<Integer>(1,2,3).filter(x -> x > 2).map(x -> x + 1)
+$.. ==> [4]
+jshell> new ImmutableList<Integer>(1,2,3).map(x -> x + 1).filter(x -> x > 2)
+$.. ==> [3, 4]
+jshell> new ImmutableList<String>().filter(s -> s.endsWith("s"))
+$.. ==> []
+jshell> new ImmutableList<String>().map(s -> s.endsWith("s"))
+$.. ==> []
+jshell> /exit

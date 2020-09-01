@@ -1,0 +1,6 @@
+class BoxIt implements Transformer<T, Box<T>> {
+	@Override
+	public Box<T> transform(T t) {
+		return Box.of(t);
+	}
+}

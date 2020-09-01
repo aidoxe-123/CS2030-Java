@@ -1,0 +1,18 @@
+jshell> /open ImmutableList.java
+jshell> new ImmutableList<Integer>(1,2,3).limit(1)
+$.. ==> [1]
+jshell> new ImmutableList<Integer>(1,2,3).limit(10)
+$.. ==> [1, 2, 3]
+jshell> ImmutableList<Integer> list = new ImmutableList<Integer>(1,2,3)
+jshell> list.limit(0)
+$.. ==> []
+jshell> list
+list ==> [1, 2, 3]
+jshell> list = list.limit(0)
+jshell> try {
+   ...>   new ImmutableList<Integer>(1,2,3).limit(-1);
+   ...> } catch (IllegalArgumentException e) {
+   ...>   System.out.println(e);
+   ...> }
+java.lang.IllegalArgumentException: limit size < 0
+jshell> /exit

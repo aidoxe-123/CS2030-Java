@@ -1,0 +1,151 @@
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.function.Function;
+import java.util.function.Predicate;
+
+class ImmutableList<T> {
+    private final List<T> lst = new ArrayList<>();
+   
+    ImmutableList(List<T> lst) {
+        for (int i = 0; i < lst.size(); i++) {
+            this.lst.add(lst.get(i));
+        }
+    }
+        
+    @SafeVarargs
+    ImmutableList(T... elements) {
+        for (int i = 0; i < elements.length; i++) {
+            this.lst.add(elements[i]);
+        }
+    }
+        
+    ImmutableList<T> add(T element) {
+        List<T> tempList = new ArrayList<>();
+        for (int i = 0; i < lst.size(); i++) {
+            tempList.add(lst.get(i));
+        }
+        tempList.add(element);
+        return new ImmutableList<>(tempList);
+    }
+        
+    ImmutableList<T> remove(T element) {
+        boolean notFound = true;
+        List<T> tempList = new ArrayList<>();
+        for (int i = 0; i < lst.size(); i++) {
+            if (notFound && lst.get(i) == element) {
+                notFound = false;
+            } else {
+                tempList.add(lst.get(i));
+            }
+        }
+        return new ImmutableList<>(tempList);
+    }
+
+    ImmutableList<T> replace(T before, T after) {
+        List<T> tempList = new ArrayList<>();
+        for (int i = 0; i < lst.size(); i++) {
+            if (lst.get(i) == before) {
+                tempList.add(after);
+            } else {
+                tempList.add(lst.get(i));
+            }
+        }
+        return new ImmutableList<>(tempList);
+    }
+   
+    <R> ImmutableList<R> map(Function<? super T, ? extends R> func) {
+        List<R> tempList = new ArrayList<>();
+        for (int i = 0; i < lst.size(); i++) {
+            tempList.add(func.apply(lst.get(i)));
+        }
+        return new ImmutableList<>(tempList);
+    }
+   
+    ImmutableList<T> filter(Predicate<? super T> pre) {
+        List<T> tempList = new ArrayList<>();
+        for (int i = 0; i < lst.size(); i++) {
+            T t = lst.get(i);
+            if (pre.test(t)) {
+                tempList.add(t);
+            }
+        }
+        return new ImmutableList<>(tempList);
+    }
+   
+    ImmutableList<T> limit(long l) throws IllegalArgumentException {
+        if (l < 0) {
+            throw new IllegalArgumentException("limit size < 0");
+        } else {
+            List<T> tempList = new ArrayList<>();
+            for (long i = 0; i < l; i++) {
+                if ((int) i < lst.size()) {
+                    tempList.add(lst.get((int) i));
+                } else {
+                    break;
+                }
+            }
+            return new ImmutableList<>(tempList);
+        }
+    }
+
+    ImmutableList<T> sorted() throws IllegalStateException {
+        ArrayList<T> tempList = new ArrayList<>();
+        for (int i = 0; i < lst.size(); i++) {
+            T t = lst.get(i);
+            if (t instanceof Comparable) {
+                tempList.add(t);
+            } else {
+                throw new IllegalStateException("List elements do not implement Comparable");
+            }
+        }
+        @SuppressWarnings("unchecked")
+        Comparator<T> comparator = (T x, T y) -> ((Comparable<T>) x).compareTo(y);
+        tempList.sort(comparator);
+        return new ImmutableList<>(tempList);
+    }
+   
+    ImmutableList<T> sorted(Comparator<? super T> comparator) throws NullPointerException {
+        if (comparator == null) {
+            throw new NullPointerException("Comparator is null");
+        } else {
+            ArrayList<T> tempList = new ArrayList<>();
+            for (int i = 0; i < lst.size(); i++) {
+                tempList.add(lst.get(i));
+            }
+            tempList.sort(comparator);
+            return new ImmutableList<>(tempList);
+        }
+    }
+   
+    @Override
+    public String toString() {
+        String myString = "[";
+        for (int i = 0; i < lst.size(); i++) {
+            myString = i != lst.size() - 1 
+                    ? myString + lst.get(i) + ", "
+                    : myString + lst.get(i);
+        }
+        myString = myString + "]";
+        return myString;
+    }
+   
+    Object[] toArray() {
+        Object[] res = new Object[lst.size()];
+        for (int i = 0; i < lst.size(); i++) {
+            res[i] = lst.get(i);
+        }
+        return res;
+    }
+   
+    <U> U[] toArray(U[] exArr) throws ArrayStoreException, NullPointerException {
+        try {
+            return lst.toArray(exArr);
+        } catch (ArrayStoreException e) {
+            throw new ArrayStoreException("Cannot add element to array as it is the wrong type");
+        } catch (NullPointerException e) {
+            throw new NullPointerException("Input array cannot be null");
+        }
+    }
+}
+

@@ -1,0 +1,68 @@
+2/
+abstract class Compute<T> {
+  abstract Compute<T> recurse();
+  abstract T evaluate();
+  abstract boolean isRecursive();
+}
+class Recursive<T> extends Compute<T>{
+  Supplier<Compute<T>> supplier;
+  Recursive(Supplier<Compute<T>> supplier) {
+    this.supplier = supplier;
+  }
+  
+  @Override
+  Compute<T> recurse() {
+    return this.supplier.get();
+  }
+  
+  @Override
+  T evaluate() {
+    return null;
+  }
+  
+  @Override
+  boolean isRecursive() {
+    return true;
+  }  
+}
+class Base<T> extends Compute<T>{
+  Supplier<T> supplier;
+  Base(Supplier<T> supplier) {
+    this.supplier = supplier;
+  }
+
+  @Override
+  Compute<T> recurse() {
+    return this;
+  }
+  
+  @Override
+  T evaluate() {
+    return this.supplier.get();
+  }
+
+  @Override
+  boolean isRecursive() {
+    return false;
+  }
+}
+class Main {
+  static Compute<Long> product(long n, long s) {
+    System.out.println(n + " " + s);
+    if (n == 0) {
+      return new Base<>(() -> s);
+    } else {
+      return new Recursive<>(() -> product(n - 1, n * s));
+    }
+  }
+  static long factorial(long n) {
+    Compute<Long> result = product(n, 1);
+    while (result.isRecursive()) {
+      result = result.recurse();
+    }
+    return result.evaluate();
+  } 
+  public static void main(String[] args) {
+    //input and output code
+  }   
+}

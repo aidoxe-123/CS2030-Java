@@ -1,0 +1,31 @@
+jshell> /open ImmutableList.java
+jshell> new ImmutableList<Integer>(3,2,1).sorted()
+$.. ==> [1, 2, 3]
+jshell> class A { }
+jshell> try {
+   ...>   new ImmutableList<A>(new A(), new A()).sorted();
+   ...> } catch (IllegalStateException e) { 
+   ...>   System.out.println(e);
+   ...> }
+java.lang.IllegalStateException: List elements do not implement Comparable
+jshell> ImmutableList<Integer> list = new ImmutableList<Integer>().sorted()
+jshell> list
+list ==> []
+jshell> new ImmutableList<A>().sorted()
+$.. ==> []
+jshell> list
+list ==> []
+jshell> list = new ImmutableList<Integer>(1,2,3)
+jshell> list.sorted((x,y) -> y - x)
+$.. ==> [3, 2, 1]
+jshell> list
+list ==> [1, 2, 3]
+jshell> try {
+   ...>   new ImmutableList<Integer>(1,2,3).sorted(null);
+   ...> } catch (NullPointerException e) {
+   ...>   System.out.println(e);
+   ...> }
+java.lang.NullPointerException: Comparator is null
+jshell> new ImmutableList<Integer>(4,5,3,6,7,2,1).filter(x -> x % 2 == 0).sorted().map(i -> "P" + i);
+$.. ==> [P2, P4, P6]
+jshell> /exit
